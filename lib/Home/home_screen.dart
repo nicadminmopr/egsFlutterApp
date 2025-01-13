@@ -1,16 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:egs/Login/login_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../Attendance/attendance_screen.dart';
+import '../Calender/calender_screen.dart';
+import 'graph_screen.dart';
+
 class HomeScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAnalytics.instance.logScreenView(screenName: "Home Screen");
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -378,23 +384,35 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: serviceCard(
-                      'Add Facilitator',
-                      Icon(
-                        Icons.support_outlined,
-                        size: 30,
-                        color: Colors.white,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        Get.to(() => AttendanceScreen());
+                      },
+                      child: serviceCard(
+                        'Add Facilitator',
+                        Icon(
+                          Icons.support_outlined,
+                          size: 30,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                   Expanded(
                     flex: 1,
-                    child: serviceCard(
-                      'Upload Attendance',
-                      Icon(
-                        Icons.countertops_outlined,
-                        size: 30,
-                        color: Colors.white,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        Get.to(() => AttendanceApp());
+                      },
+                      child: serviceCard(
+                        'Upload Attendance',
+                        Icon(
+                          Icons.countertops_outlined,
+                          size: 30,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -481,6 +499,71 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 20),
+            Divider(),
+            SizedBox(height: 20),
+            Container(
+              child: BarChartSample3(),
+              margin: EdgeInsets.symmetric(horizontal: 15.0),
+            ),
+            SizedBox(height: kBottomNavigationBarHeight + 20),
+            /* Container(
+              height: 400,
+              child: BarChart(
+                BarChartData(
+                  barGroups: [
+                    BarChartGroupData(
+                      x: 0,
+                      barRods: [
+                        BarChartRodData(toY: 8, color: Colors.lightBlueAccent),
+                      ],
+                    ),
+                    BarChartGroupData(
+                      x: 1,
+                      barRods: [
+                        BarChartRodData(toY: 10, color: Colors.lightBlueAccent),
+                      ],
+                    ),
+                    BarChartGroupData(
+                      x: 2,
+                      barRods: [
+                        BarChartRodData(toY: 14, color: Colors.lightBlueAccent),
+                      ],
+                    ),
+                    BarChartGroupData(
+                      x: 3,
+                      barRods: [
+                        BarChartRodData(toY: 15, color: Colors.lightBlueAccent),
+                      ],
+                    ),
+                    BarChartGroupData(
+                      x: 4,
+                      barRods: [
+                        BarChartRodData(toY: 13, color: Colors.lightBlueAccent),
+                      ],
+                    ),
+                  ],
+                  barTouchData: BarTouchData(
+                    touchTooltipData: BarTouchTooltipData(
+                      getTooltipColor:
+                          (barTouchTooltipData) => Colors.blueAccent,
+                    ),
+                    touchCallback: (
+                      FlTouchEvent event,
+                      BarTouchResponse? response,
+                    ) {
+                      if (!event.isInterestedForInteractions ||
+                          response == null ||
+                          response.spot == null) {
+                        return;
+                      }
+                      // Handle touch events here
+                    },
+                    handleBuiltInTouches: true,
+                  ),
+                ),
+              ),
+            ),*/
           ],
         ),
       ),
