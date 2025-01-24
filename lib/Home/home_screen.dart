@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:egs/Login/login_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,9 +11,11 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../Attendance/attendance_screen.dart';
 import '../Calender/calender_screen.dart';
 import 'graph_screen.dart';
+import 'home_screen_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final controller = Get.put(HomeScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +42,15 @@ class HomeScreen extends StatelessWidget {
         ),
         automaticallyImplyLeading: false,
         actions: [
+          Obx(
+            () => CupertinoSwitch(
+              value: controller.isSwitched.value,
+              onChanged: (value) {
+                controller.toggleSwitch(value);
+              },
+            ),
+          ),
+
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Image.asset(
@@ -163,12 +175,16 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 3.0),
-                      Text(
-                        'Flutter Developer',
-                        style: GoogleFonts.montserrat(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w500,
+                      Obx(
+                        () => Text(
+                          controller.isSwitched.value
+                              ? 'Admin'
+                              : 'Data Entry Role',
+                          style: GoogleFonts.montserrat(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                       SizedBox(height: 12.0),
@@ -177,6 +193,7 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
+                            flex: 1,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,10 +230,10 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            flex: 1,
                           ),
                           SizedBox(width: 10),
                           Expanded(
+                            flex: 1,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,7 +268,6 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            flex: 1,
                           ),
                         ],
                       ),
@@ -259,6 +275,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 Positioned(
+                  left: 30,
+                  top: -20,
                   child: ClipOval(
                     child: CachedNetworkImage(
                       imageUrl: 'https://picsum.photos/id/237/200/300',
@@ -270,14 +288,12 @@ class HomeScreen extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  left: 30,
-                  top: -20,
                 ),
               ],
             ),
 
             SizedBox(height: 10.0),
-            Container(
+            /* Container(
               margin: EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
                 children: [
@@ -363,7 +379,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+            ),*/
             SizedBox(height: 30.0),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 15.0),
@@ -387,16 +403,30 @@ class HomeScreen extends StatelessWidget {
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
-                        Get.to(() => AttendanceScreen());
+                        Get.to(() => AttendanceApp());
                       },
                       child: serviceCard(
-                        'Add Facilitator',
-                        Icon(
-                          Icons.support_outlined,
-                          size: 30,
-                          color: Colors.white,
-                        ),
+                        'Download Data',
+                        Icon(Icons.download, size: 30, color: Colors.white),
                       ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: serviceCard(
+                      'Asset GeoTag',
+                      Icon(
+                        Icons.add_location_alt,
+                        size: 30,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: serviceCard(
+                      'Sync',
+                      Icon(Icons.sync, size: 30, color: Colors.white),
                     ),
                   ),
                   Expanded(
@@ -404,33 +434,15 @@ class HomeScreen extends StatelessWidget {
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
-                        Get.to(() => AttendanceApp());
+                        Get.to(() => AttendanceScreen());
                       },
                       child: serviceCard(
-                        'Upload Attendance',
+                        'Clear Data',
                         Icon(
-                          Icons.countertops_outlined,
+                          Icons.cleaning_services_rounded,
                           size: 30,
                           color: Colors.white,
                         ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: serviceCard(
-                      'Upload Documents',
-                      Icon(Icons.upload_file, size: 30, color: Colors.white),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: serviceCard(
-                      'Geofence',
-                      Icon(
-                        Icons.gesture_outlined,
-                        size: 30,
-                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -442,7 +454,7 @@ class HomeScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 15.0),
               child: Text(
-                'My Information',
+                'For you',
                 style: GoogleFonts.montserrat(
                   color: Colors.black,
                   fontSize: 17.0,
@@ -459,43 +471,13 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: serviceCardNew(
-                      'Add Facilitator',
-                      Icon(
-                        Icons.support_outlined,
-                        size: 30,
-                        color: Colors.black,
-                      ),
+                      'Panchayat Marking (GeoTag)',
+                      Icon(Icons.location_city, size: 30, color: Colors.black),
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: serviceCardNew(
-                      'Upload Attendance',
-                      Icon(
-                        Icons.countertops_outlined,
-                        size: 30,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: serviceCardNew(
-                      'Upload Documents',
-                      Icon(Icons.upload_file, size: 30, color: Colors.black),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: serviceCardNew(
-                      'Geofence',
-                      Icon(
-                        Icons.gesture_outlined,
-                        size: 30,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+                  Expanded(flex: 1, child: Container()),
+                  Expanded(flex: 1, child: Container()),
+                  Expanded(flex: 1, child: Container()),
                 ],
               ),
             ),

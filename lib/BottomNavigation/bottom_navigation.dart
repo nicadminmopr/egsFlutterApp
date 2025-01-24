@@ -126,7 +126,7 @@ class _MyBottomNavigationState extends State<MyBottomNavigation>
                 width: 40,
                 child: Center(
                   child: Icon(
-                    Icons.add_location_alt,
+                    Icons.file_download_outlined,
                     color: currentPage == 1 ? Colors.white : unselectedColor,
                   ),
                 ),
@@ -137,7 +137,7 @@ class _MyBottomNavigationState extends State<MyBottomNavigation>
                 width: 40,
                 child: Center(
                   child: Icon(
-                    Icons.pinch,
+                    Icons.add_location_alt,
                     color: currentPage == 3 ? Colors.white : unselectedColor,
                   ),
                 ),
@@ -147,7 +147,7 @@ class _MyBottomNavigationState extends State<MyBottomNavigation>
                 width: 40,
                 child: Center(
                   child: Icon(
-                    Icons.person,
+                    Icons.sync,
                     color: currentPage == 4 ? Colors.white : unselectedColor,
                   ),
                 ),

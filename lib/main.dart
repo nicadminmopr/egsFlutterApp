@@ -1,9 +1,8 @@
+import 'package:egs/teacher_attendance.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'BottomNavigation/bottom_navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
 
-      home: MyBottomNavigation(),
+      home: TeacherAttendanceScreen(),
     );
   }
 }
