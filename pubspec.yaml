@@ -46,6 +46,10 @@ dependencies:
   flutter_floating_bottom_bar: ^1.2.1+1
   flutter_map: ^7.0.2
   latlong2: ^0.9.1
+  face_camera: ^0.1.4
+  flutter_image_compress: ^2.4.0
+  path_provider: ^2.1.5
+  path: ^1.9.1
 
 
 dev_dependencies:
